@@ -1,15 +1,103 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+
+html, body {
     background-color: #f8f9fa; /* Cor de fundo clara */
-    height: 100vh; /* Altura total da tela */
-}
-header {
-    flex: 0 0 auto; /* O cabeçalho ocupa apenas o espaço necessário */
+    height: 100%; /* Altura total da tela */
 }
 
-footer {
-    background-color: blue;
-    height: 75px;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
+/* Header CSS */
+
+header {
+    flex: 0 0 auto; /* O cabeçalho ocupa apenas o espaço necessário */
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #000000A6;
 }
+
+/* Body CSS */
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.body-content {
+    padding-bottom: 200px;
+}
+
+/* Main Content CSS */
+
+.main-content {
+    border-radius: 25px;
+}
+
+/* Block Content CSS */
+
+.block-content {
+    padding: 50px 30px;
+    box-shadow: 0px 0px 5px 0px #00000038;
+}
+
+/* Card CSS */
+
+.card-title {
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #000000A6;
+}
+
+.card-title .form-group {
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.45px;
+}
+
+/* Form CSS */
+
+.register-form,
+.login-form {
+    color:#333333;
+}
+
+.input-with-icon {
+position: relative;
+}
+
+.input-with-icon input {
+padding-right: 2.5rem;
+}
+
+.input-with-icon .icon {
+position: absolute;
+right: 10px;
+top: 75%;
+transform: translateY(-50%);
+color: #aaa;
+}
+
+/* Footer CSS */
+
+footer {
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 100px;
+}
+
+/* Media Queries */
+
+@media (max-width: 768px) {
+    .body-content {
+        padding-top: 50px;
+        padding-bottom: 100px;
+    }
+  }
+  
