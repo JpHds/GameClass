@@ -1,0 +1,23 @@
+/* Sidebar */
+
+.sidebar {
+    background-color: #f1f1f1;
+    height: 100vh; /* Altura total da página */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 1);
+}
+
+.sidebar .nav-link {
+    color: #333;
+    padding: 15px;
+    font-weight: bold;
+}
+
+.sidebar .nav-link.active {
+    background-color: #0078F0;
+    color: #fff;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #0078F0;
+    color: #fff;
+}

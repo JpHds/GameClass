@@ -67,22 +67,19 @@ body {
 }
 
 .input-with-icon {
-position: relative;
-}
+    position: relative;
+        & input {
+            padding-right: 2.5rem;
+        }
 
-.input-with-icon input {
-padding-right: 2.5rem;
+        & .icon {
+            position: absolute;
+            right: 10px;
+            top: 75%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
 }
-
-.input-with-icon .icon {
-position: absolute;
-right: 10px;
-top: 75%;
-transform: translateY(-50%);
-color: #aaa;
-}
-
-/* Footer CSS */
 
 footer {
     position: relative;
