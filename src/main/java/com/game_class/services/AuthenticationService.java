@@ -1,18 +1,23 @@
 package com.game_class.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.game_class.dtos.UserLoginRequestDTO;
+import com.game_class.dtos.UserLoginResponseDTO;
 import com.game_class.dtos.UserRegisterRequestDTO;
+import com.game_class.dtos.UserRegisterResponseDTO;
 import com.game_class.exceptions.DataAlreadyInUseException;
 import com.game_class.exceptions.InvalidCredentialsException;
 import com.game_class.models.User;
 import com.game_class.repositories.UserRepository;
+import com.game_class.security.TokenService;
 
 @Service
-public class AuthService {
+public class AuthenticationService {
 
     @Autowired
     private UserRepository userRepository;
@@ -20,8 +25,16 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    public User register(UserRegisterRequestDTO user) {
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private CookieService cookieService;
+
+    public UserRegisterResponseDTO register(UserRegisterRequestDTO user) {
         User userToRegister = userRepository.findByEmail(user.username());
 
         if (userToRegister != null) {
@@ -38,20 +51,24 @@ public class AuthService {
                 user.userType());
         userRepository.save(newUser);
 
-        return newUser;
+        return new UserRegisterResponseDTO(newUser.getUserId(), newUser.getUsername(), newUser.getEmail(), newUser.getUserType());
     }
 
-    public User login(UserLoginRequestDTO user) {
+    public UserLoginResponseDTO login(UserLoginRequestDTO user) {
 
         User userToLogin = userRepository.findByUsername(user.username());
 
-        if (userToLogin == null){
-            throw new InvalidCredentialsException("Usuário não encontrado.");}
+        if (userToLogin == null) {
+            throw new InvalidCredentialsException("Usuário não encontrado.");
+        }
 
         if (!passwordEncoder.matches(user.password(), userToLogin.getPassword()))
             throw new InvalidCredentialsException("Senha incorreta.");
 
-
-        return userToLogin;
+        var userPassword = new UsernamePasswordAuthenticationToken(user.username(), user.password());
+        var auth = this.authenticationManager.authenticate(userPassword);
+        var token = tokenService.generateToken(userToLogin);
+        cookieService.createTokenCookie(token);
+        return new UserLoginResponseDTO(userToLogin.getUsername(), userToLogin.getEmail());
     }
 }

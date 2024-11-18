@@ -1,5 +1,11 @@
 package com.game_class.models;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     public User(String username, String email, String password, UserType userType) {
         this.username = username;
@@ -42,4 +48,42 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "userType", nullable = false)
     private UserType userType;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (userType == UserType.STUDENT)
+            return List.of(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_TEACHER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
