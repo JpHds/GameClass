@@ -26,11 +26,11 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(authorize -> authorize
-                                                .requestMatchers("/css/**", "/img/**", "/script/**").permitAll()
-                                                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                                .requestMatchers("/scripts/**", "/css/**", "/img/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
                                                 .anyRequest().permitAll())
                                 .formLogin(formLogin -> formLogin
-                                                .loginPage("/login")
+                                                .loginPage("/auth")
                                                 .permitAll())
                                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();

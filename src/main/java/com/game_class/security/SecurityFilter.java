@@ -54,7 +54,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                         .anyMatch(auth -> auth.getAuthority().equals("ROLE_TEACHER")
                                 || auth.getAuthority().equals("ROLE_STUDENT"));
 
-                boolean isNotLoggedPages = List.of("/login", "/register")
+                boolean isNotLoggedPages = List.of("/auth")
                         .stream()
                         .anyMatch(uri -> request.getRequestURI().contains(uri));
 

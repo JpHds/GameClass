@@ -2,10 +2,7 @@
 <html lang="pt-br">
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
     <!-- Bootstrap CSS -->
     <link
@@ -14,8 +11,7 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-    <!-- <link rel="stylesheet" th:href="@{/css/index.css}"> -->
-    <link rel="stylesheet" href="../static/css/index.css" />
+    <link rel="stylesheet" th:href="@{/css/auth.css}" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -31,11 +27,13 @@
 
     <div class="container body-content">
       <div class="row main-content">
+        
+        <!-- Register block -->
         <div class="col-md-8 block-content block-register">
           <h1 class="card-title text-center poetsen-one-font">
             Criar Sua Conta
           </h1>
-          <form class="register-form" method="post" action="/auth/register">
+          <form id="registerForm" method="post" action="/auth/register">
             <div class="form-group input-with-icon">
               <label for="username">Nome de Usuário</label>
               <input
@@ -73,28 +71,31 @@
               <i class="fas fa-lock icon"></i>
             </div>
             <div class="form-group">
-                <select name="userType" id="userType" class="form-control">
-                  <option value="">Tipo de usuário</option>
-                  <option value="TEACHER">Professor</option>
-                  <option value="STUDENT">Aluno</option>
-                </select>
+              <select name="userType" id="userType" class="form-control">
+                <option value="">Tipo de usuário</option>
+                <option value="TEACHER">Professor</option>
+                <option value="STUDENT">Aluno</option>
+              </select>
             </div>
             <button type="submit" class="btn btn-primary btn-block">
               Entrar
             </button>
           </form>
         </div>
+
+        <!-- Login block -->
         <div class="col-md-4 block-content block-login">
           <h1 class="card-title text-center mb-4">
             Bem-vindo ao <span style="color: #0078f0">LOGIN</span>
           </h1>
-          <form class="login-form">
+          <form id="loginForm">
             <div class="form-group input-with-icon">
               <label for="username">Nome de Usuário</label>
               <input
                 type="text"
                 class="form-control"
-                id="username"
+                id="loginUsername"
+                name="username"
                 placeholder="Digite seu nome de usuário"
                 required
               />
@@ -105,7 +106,8 @@
               <input
                 type="password"
                 class="form-control"
-                id="password"
+                id="loginPassword"
+                name="password"
                 placeholder="Digite sua senha"
                 required
               />
@@ -142,5 +144,7 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
+
+    <script th:src="@{/scripts/auth.js}"></script>
   </body>
 </html>

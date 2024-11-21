@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGenericException(Exception ex) {
-        return new ResponseEntity<>("Ocorreu um erro ao processar sua solicitação.", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    // @ExceptionHandler(Exception.class)
+    // public ResponseEntity<String> handleGenericException(Exception ex) {
+    //     return new ResponseEntity<>("Ocorreu um erro ao processar sua solicitação.", HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
 
     @ExceptionHandler(UnableToRegisterUserException.class)
     public ResponseEntity<String> handleUnableToRegisterUserException(UnableToRegisterUserException ex) {
