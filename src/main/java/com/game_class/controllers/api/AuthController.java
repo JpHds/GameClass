@@ -40,7 +40,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserLoginDTO user) {
         try {
-            UserLoginDTO userToLogin = authenticationService.login(user);
+            authenticationService.login(user);
             return cookieService.createTokenCookie(new User(user.username(), user.password()));
         } catch (Exception e) {
             throw new RuntimeException("Usuário ou senha inválidos.");

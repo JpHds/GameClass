@@ -23,7 +23,7 @@ public class CookieService {
     public ResponseEntity<String> createTokenCookie(User user) {
 
         var userPassword = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-        var auth = this.authenticationManager.authenticate(userPassword);
+        authenticationManager.authenticate(userPassword);
         var token = tokenService.generateToken(user);
 
         ResponseCookie tokenCookie = ResponseCookie.from("token", token)
