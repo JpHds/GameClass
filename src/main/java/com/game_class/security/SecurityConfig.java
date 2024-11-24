@@ -28,10 +28,17 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers("/scripts/**", "/css/**", "/img/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
-                                                .anyRequest().permitAll())
+                                                .anyRequest().authenticated())
                                 .formLogin(formLogin -> formLogin
                                                 .loginPage("/auth")
                                                 .permitAll())
+                                .logout(logout -> logout
+                                        .logoutUrl("/logout")
+                                        .logoutSuccessUrl("/auth")
+                                        .deleteCookies("token")
+                                        .invalidateHttpSession(true)
+                                        .clearAuthentication(true)
+                                        )
                                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();
         }
