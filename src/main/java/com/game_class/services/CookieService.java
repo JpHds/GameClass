@@ -1,6 +1,7 @@
 package com.game_class.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ public class CookieService {
     @Autowired
     private TokenService tokenService;
 
+    @Value("${LOGIN_VALIDATE_HOURS}")
+    private Long validate;
 
     public ResponseEntity<String> createTokenCookie(User user) {
 
@@ -28,7 +31,7 @@ public class CookieService {
 
         ResponseCookie tokenCookie = ResponseCookie.from("token", token)
                 .httpOnly(true)
-                .maxAge(hoursForSeconds(2))
+                .maxAge(validateTime())
                 .path("/")
                 .sameSite("Strict")
                 .build();
@@ -37,7 +40,7 @@ public class CookieService {
                 .body("Login realizado!");
     }
 
-    public int hoursForSeconds(int hours) {
-        return hours * 60 * 60;
+    public Long validateTime() {
+        return validate * 60 * 60;
     }
 }

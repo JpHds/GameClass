@@ -16,8 +16,11 @@ import com.game_class.models.User;
 @Service
 public class TokenService {
 
-    @Value("${api.security.token.secret}")
+    @Value("${TOKEN_SECRET_PASS")
     private String secret;
+
+    @Value("${LOGIN_VALIDATE_HOURS}")
+    private Long validate;
 
     public String generateToken(User user) {
         try {
@@ -47,7 +50,7 @@ public class TokenService {
     }
 
     private Instant genExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(validate).toInstant(ZoneOffset.of("-03:00"));
     }
 
 }
