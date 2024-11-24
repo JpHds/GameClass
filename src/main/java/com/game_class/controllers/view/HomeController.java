@@ -10,8 +10,14 @@ public class HomeController {
         return "auth";
     
     }
+
     @GetMapping("/index")
     public String indexPage() {
         return "index";
+    }
+
+    @GetMapping("/my")
+    public String myPublishesPage() {
+        return "my-publishes";
     }
 }

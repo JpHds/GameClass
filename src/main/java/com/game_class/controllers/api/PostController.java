@@ -58,7 +58,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/my")
+    @GetMapping("/myPublishes")
     public List<PostWithCommentsCountDTO> getPostsBySessionUserId() {
         User user = (User) this.authenticationService.getCurrentAuthentication().getPrincipal();
         return postRepository.findPostsBySessionUserId(user.getUserId());
