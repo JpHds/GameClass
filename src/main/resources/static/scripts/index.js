@@ -3,13 +3,17 @@ const newQuestionForm = document.getElementById('newQuestionForm');
 newQuestionForm.addEventListener('submit', function (event) {
   event.preventDefault();
   const question = document.getElementById('newQuestion').value;
-  const questionMatter = document.getElementById('questionMatterModal').value;
+  const matterId = document.getElementById('questionMatterModal').value;
+
   fetch('/posts/new', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ question, questionMatter })
+    body: JSON.stringify({
+      question: question,
+      matterId: matterId
+    })
   })
     .then(response => {
       if (!response.ok) {
@@ -21,12 +25,12 @@ newQuestionForm.addEventListener('submit', function (event) {
 
 const postsContainer = document.getElementById('postsContainer');
 
-function createPost({ username, postQuestion, commentsCount, postId }) {
+function createPosts({ username, postQuestion, commentsCount, postId }) {
   const postDiv = document.createElement('div');
   postDiv.className = 'col-md-4 mb-3';
 
   postDiv.innerHTML = `
-    <form class = "form-card">
+    <form class= "form-card">
       <div class="post-card">
         <div class="d-flex align-items-center">
           <img
@@ -51,11 +55,12 @@ function createPost({ username, postQuestion, commentsCount, postId }) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  postsContainer.innerHTML = ''
   fetch('/posts/all')
     .then(response => response.json())
     .then(posts => {
       posts.forEach(post => {
-        const postElement = createPost(post);
+        const postElement = createPosts(post);
         postsContainer.appendChild(postElement);
       });
     })
@@ -69,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const li = document.createElement('li');
         const button = document.createElement('button');
         button.classList.add('dropdown-item');
-        button.value = type.matterId;
+        button.setAttribute("data-value", type.matterId)
         button.textContent = type.matterName;
         li.appendChild(button);
         selectFilterPrincipal.appendChild(li);
@@ -85,5 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     })
     .catch(error => console.error('Erro ao carregar tipos de questões:', error));
-
 })
+
+
+document.getElementById('questionMatterPrincipal').addEventListener('click', function (matterId) {
+  postsContainer.innerHTML = '';
+  const matter = matterId.target.getAttribute('data-value');
+  fetch(`/posts/matter/${matter}`)
+    .then(response => response.json())
+    .then(posts => {
+      posts.forEach(post => {
+        const postElement = createPosts(post);
+        postsContainer.appendChild(postElement);
+      })
+    })
+});

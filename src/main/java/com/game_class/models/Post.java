@@ -31,7 +31,7 @@ public class Post {
     private String postQuestion;
 
     @ManyToOne
-    @JoinColumn(name = "post_matter")
+    @JoinColumn(name = "matter_id")
     private Matter postMatter;
 
     public Post(String question, Matter postMatter, User user) {

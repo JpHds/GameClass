@@ -45,14 +45,23 @@ public class PostController {
 
     @GetMapping("/all")
     public List<PostWithCommentsCountDTO> getAllPosts() {
-        List<PostWithCommentsCountDTO> postsList = postRepository.findAllWithCommentsCount();
+        List<PostWithCommentsCountDTO> postsList = postRepository.findAllPostsWithCommentsCount();
         return postsList;
     }
 
-    @GetMapping("/{id}")
-    public List<PostWithCommentsCountDTO> getPostsByMatter(@PathVariable("id") long matterId) {
-        List<PostWithCommentsCountDTO> postsList = postRepository.findPostsByMatterId(matterId);
-        return postsList;
+    @GetMapping("matter/{matterId}")
+    public List<PostWithCommentsCountDTO> getPostsByMatter(@PathVariable("matterId") long matterId) {
+        if (matterId != 0) {
+            return postRepository.findPostsWithCommentsCountByMatterId(matterId);
+        } else {
+            return postRepository.findAllPostsWithCommentsCount();
+        }
+    }
+
+    @GetMapping("/my")
+    public List<PostWithCommentsCountDTO> getPostsBySessionUserId() {
+        User user = (User) this.authenticationService.getCurrentAuthentication().getPrincipal();
+        return postRepository.findPostsBySessionUserId(user.getUserId());
     }
 
 }
