@@ -1,137 +1,409 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GameClass - Publicações</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" th:href="@{/css/index.css}" />
-  </head>
-  <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h4 class="text-primary">GameClass</h4>
-      <br />
-      <a href="#"
-        ><img class="espacamento" th:attr="src=@{/img/icon-home.png}" alt=""/> Home</a
-      >
+<html lang="en">
 
-      <a href="/my"
-        ><img class="espacamento" th:attr="src=@{/img/publi.png}" alt=""/>
-        Minhas Publicações</a
-      >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameClass</title>
+  <!-- CSS Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-      <a href="/logout"
-        ><img class="espacamento" th:attr="src=@{/img/publi.png}" alt=""/>
-        Sair</a
-      >
+  <!-- CSS DataTables -->
+  <link href="https://cdn.jsdelivr.net/npm/datatables.net-bs5@2.0.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- JS DataTables -->
+  <script src="https://cdn.jsdelivr.net/npm/datatables.net@2.0.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/datatables.net-bs5@2.0.1/js/dataTables.bootstrap5.min.js"></script>
+
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    footer {
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    /* Estilo para o título */
+    .page-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #343a40;
+      margin: 2rem 0;
+    }
+
+    /* Cards */
+    .card {
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      color: #343a40;
+    }
+
+    .card-text {
+      color: #6c757d;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-clamp: 3; /* Define o número máximo de linhas */
+      -webkit-line-clamp: 3;
+      min-height: calc(1.5rem * 3);
+    }
+    
+    /* Estilo para o menu lateral */
+    .offcanvas {
+      background-color: #343a40;
+      /* Fundo escuro */
+      color: #fff;
+      /* Texto branco */
+    }
+
+    .offcanvas .offcanvas-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ffc107;
+      /* Destaque para o título */
+    }
+
+    .offcanvas-body ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .offcanvas-body ul li {
+      margin-bottom: 1rem;
+      /* Espaçamento entre os itens */
+    }
+
+    .offcanvas-body ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      padding: 0.5rem 1rem;
+      display: block;
+      border-radius: 5px;
+    }
+
+    .offcanvas-body ul li a:hover {
+      background-color: #ffc107;
+      /* Fundo amarelo no hover */
+      color: #343a40;
+      /* Texto escuro no hover */
+    }
+
+    /* Botão principal */
+    .btn-primary {
+      background-color: #ffc107;
+      border: none;
+      color: #343a40;
+    }
+
+    .btn-primary:hover {
+      background-color: #e0a800;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Menu lateral -->
+  <nav class="navbar bg-light">
+    <div class="container-fluid">
+      <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"
+        aria-controls="menuLateral">
+        ☰ Menu
+      </button>
+    </div>
+  </nav>
+
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="menuLateral" aria-labelledby="menuLateralLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="menuLateralLabel">GameClass</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="list-unstyled">
+        <li><a href="/" class="text-decoration-none">Início</a></li>
+        <li><a href="/my" class="text-decoration-none">Minhas publicações</a></li>
+        <li><a href="/logout" class="text-decoration-none">Sair</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div class="container my-5 flex-grow-1">
+    <!-- Título -->
+    <div class="d-flex justify-content-between mb-3">
+      <!-- Botão à esquerda -->
+      <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newQuestionModal">Nova
+        pergunta</button>
+
+      <!-- Botão à direita -->
+      <button class="btn btn-outline-primary" data-bs-toggle="modal"
+        data-bs-target="#filterMatterModal">Filtrar</button>
     </div>
 
-    <!--barra de navegação-->
-    <div class="container mt-4">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <form class="d-flex">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Pesquisar..."
-              aria-label="Search"
-            />
-            <button class="btn btn-primary" type="submit">Buscar</button>
-          </form>
+
+    <!-- Cards em 4 colunas -->
+    <div class="row g-4" id="cards-container"></div>
+  </div>
+  <!-- Paginação dos cards -->
+  <nav>
+    <ul id="pagination" class="pagination justify-content-center mt-4"></ul>
+  </nav>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-3 mt-auto">
+    <p>&copy; 2024 GameClass. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- Modal para Filtro -->
+  <div class="modal fade" id="filterMatterModal" tabindex="-1" aria-labelledby="filterMatterModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="filterMatterModalLabel">Filtrar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-      </div>
-    </div>
-
-    <!-- container de publicaçoes -->
-    <div class="content">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Publicações</h2>
-        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalCreateNewPost">
-           Nova Publicação
-        </button>
-      </div>
-
-      <!-- campo de filtros-->
-      <div class="filter-section">
-        <div class="btn-group">
-          <button
-            class="btn btn-outline-secondary dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Filtrar
-          </button>
-          <ul class="dropdown-menu" id="questionMatterPrincipal">
-            <li><button class="dropdown-item" data-value="0">Todas</button></li>
-            <!-- Exibição do menu de matérias -->
-          </ul>
-        </div>
-      </div>
-      <div class="row mt-4" id="postsContainer">
-        <!-- Container para exibir os posts -->
-      </div>
-    </div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <!-- Cabeçalho -->
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Título do Modal</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <!-- Corpo -->
+        <form>
           <div class="modal-body">
-            Este é o conteúdo do modal.
+            <div class="mb-3">
+              <label for="selecMatterFilter" class="form-label">Selecione uma matéria</label>
+              <select class="form-select" name="selecMatterFilter" id="selecMatterFilter" required>
+                <option value="0">Todas</option>
+              </select>
+            </div>
           </div>
-          <!-- Rodapé -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary">Salvar mudanças</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Aplicar Filtro</button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
+  </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modalCreateNewPost" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <!-- Cabeçalho -->
-          <div class="modal-header">
-            <h5 class="modal-title">Nova Publicação</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <!-- Corpo -->
-          <form id="newQuestionForm">
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="questionMatterModal">Selecione uma matéria: </label>
-                <select class="form-control" name="questionMatterModal" id="questionMatterModal">
-                  <option value="">Escolher...</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="newQuestion" class="form-label">Escreva sua pergunta: </label>
-                <textarea name="newQuestion" id="newQuestion" class="form-control"></textarea>
-              </div>
-            </div>
-            <!-- Rodapé -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="btn btn-primary">Enviar pergunta</button>
-            </div>
-          </form>
+  <div class="modal fade" id="newQuestionModal" tabindex="-1" aria-labelledby="newQuestionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newQuestionModalLabel">Nova pergunta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <form id="newQuestionForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="newQuestion" class="form-label">Escreva sua pergunta:</label>
+              <textarea class="form-control" name="newQuestion" id="newQuestion" rows="4" style="resize: none;" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <select class="form-select" id="selectMatterNewQuestion" required>
+                <option value="">Selecione uma matéria</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Enviar pergunta</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
-    <footer>
-      <p>&copy; 2024. Todos os direitos reservados.</p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/scripts/index.js}"></script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>
+
+<script>
+
+  // Form para criação de nova questão
+  const newQuestionForm = document.getElementById('newQuestionForm');
+
+  newQuestionForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const question = document.getElementById('newQuestion').value;
+    const matterId = document.getElementById('selectMatterNewQuestion').value;
+
+    fetch('/posts/new', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        question: question,
+        matterId: matterId
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Erro na requisição: ${response.status}`);
+        }
+        window.location.href = '/index';
+      })
+  });
+
+  const CARDS_PER_PAGE = 8; // Quantidade de cards por página
+  const cardContainer = document.getElementById("cards-container");
+  const pagination = document.getElementById("pagination");
+
+  let cards = []; // Lista de cards recebida do backend
+  let currentPage = 1;
+  let url = '';
+
+  // Função para buscar os dados do backend
+  async function fetchCards(matterFilter) {
+    try {
+      if(matterFilter && matterFilter != "0") {
+        url = `/posts/matter/${matterFilter}`
+      } else {
+        url = '/posts/all'
+      }
+      const response = await fetch(url);
+      cards = await response.json();
+      renderPagination();
+      renderCards(currentPage);
+    } catch (error) {
+      console.error("Erro ao buscar dados dos cards:", error);
+    }
+  }
+
+  // Renderizar os cards da página atual
+  function renderCards(page) {
+    cardContainer.innerHTML = ""; // Limpar cards
+    const start = (page - 1) * CARDS_PER_PAGE;
+    const end = start + CARDS_PER_PAGE;
+    const cardsToShow = cards.slice(start, end);
+
+    cardsToShow.forEach(card => {
+      const cardHTML = `
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              
+              <div class="d-flex justify-content-between mb-3">
+                <span>${card.username}</span>
+                <span class="badge ${card.userType === 'teacher' ? 'bg-danger' : 'bg-primary'}">${card.userType === 'teacher' ? 'Professor' : 'Aluno'}</span>
+              </div>
+
+              <div class="mb-3 card-text">
+                ${card.postQuestion}
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-primary">${card.commentsCount} comentários</span>
+                <button class="btn btn-primary">Visualizar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      cardContainer.innerHTML += cardHTML;
+    });
+  }
+
+  // Renderizar os botões de paginação
+  function renderPagination() {
+    pagination.innerHTML = ""; // Limpar paginação
+    const totalPages = Math.ceil(cards.length / CARDS_PER_PAGE);
+
+    // Botão "Anterior"
+    const prevButton = document.createElement("li");
+    prevButton.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+    prevButton.innerHTML = `<a class="page-link" href="#" id="prev-page">Anterior</a>`;
+    prevButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (currentPage > 1) {
+        currentPage--;
+        renderCards(currentPage);
+        renderPagination();
+      }
+    });
+    pagination.appendChild(prevButton);
+
+    // Botões de páginas
+    for (let i = 1; i <= totalPages; i++) {
+      const pageButton = document.createElement("li");
+      pageButton.className = `page-item ${i === currentPage ? "active" : ""}`;
+      pageButton.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+      pageButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        currentPage = i;
+        renderCards(currentPage);
+        renderPagination();
+      });
+      pagination.appendChild(pageButton);
+    }
+
+    // Botão "Próximo"
+    const nextButton = document.createElement("li");
+    nextButton.className = `page-item ${currentPage === totalPages ? "disabled" : ""}`;
+    nextButton.innerHTML = `<a class="page-link" href="#" id="next-page">Próximo</a>`;
+    nextButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderCards(currentPage);
+        renderPagination();
+      }
+    });
+    pagination.appendChild(nextButton);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchCards();
+    
+    fetch('/matters/all')
+      .then(response => response.json())
+      .then(data => {
+
+        const selectMatterNewQuestion = document.getElementById('selectMatterNewQuestion');
+        data.forEach(type => {
+          const option = document.createElement('option');
+          option.value = type.matterId;
+          option.textContent = type.matterName;
+          selectMatterNewQuestion.appendChild(option);
+        });
+
+        const selecMatterFilter = document.getElementById('selecMatterFilter');
+        data.forEach(type => {
+          const option = document.createElement('option');
+          option.value = type.matterId;
+          option.textContent = type.matterName;
+          selecMatterFilter.appendChild(option);
+        });
+
+      })
+      .catch(error => console.error('Erro ao carregar tipos de questões:', error));
+  })
+
+  const filterMatter = document.getElementById('filterMatterModal');
+
+  filterMatter.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const matterId = document.getElementById('selecMatterFilter').value;
+    fetchCards(matterId);
+
+    const filterModal = new bootstrap.Modal(document.getElementById("filterMatterModal"));
+    filterModal.hide();
+  })
+</script>
