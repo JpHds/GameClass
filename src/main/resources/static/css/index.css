@@ -105,13 +105,13 @@ footer {
   justify-content: center;
   text-align: center;
   background-color: grey;
-  min-height: 200px;
   border-radius: 5px;
 }
 
 .comments {
-  max-height: 120px;
-  overflow-y: scroll;
+  min-height: 150px;
+  max-height: 200px;
+  overflow-y: auto;
   overflow-x: visible;
 }
 
