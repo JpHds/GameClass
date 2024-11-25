@@ -58,10 +58,15 @@ public class PostController {
         }
     }
 
+    @GetMapping("/{postId}")
+    public PostWithCommentsCountDTO getPostById(@PathVariable("postId") Long postId) {
+        return postRepository.findPostById(postId);
+    }
+
     @GetMapping("/myPublishes")
     public List<PostWithCommentsCountDTO> getPostsBySessionUserId() {
         User user = (User) this.authenticationService.getCurrentAuthentication().getPrincipal();
-        return postRepository.findPostsBySessionUserId(user.getUserId());
+        return postRepository.findPostsByUserId(user.getUserId());
     }
 
 }

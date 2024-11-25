@@ -8,6 +8,8 @@
   <!-- CSS Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+
   <!-- CSS DataTables -->
   <link href="https://cdn.jsdelivr.net/npm/datatables.net-bs5@2.0.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
@@ -17,108 +19,7 @@
   <!-- JS DataTables -->
   <script src="https://cdn.jsdelivr.net/npm/datatables.net@2.0.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/datatables.net-bs5@2.0.1/js/dataTables.bootstrap5.min.js"></script>
-
-  <style>
-    html,
-    body {
-      height: 100%;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-
-    footer {
-      flex-shrink: 0;
-      text-align: center;
-    }
-
-    /* Estilo para o título */
-    .page-title {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #343a40;
-      margin: 2rem 0;
-    }
-
-    /* Cards */
-    .card {
-      border: none;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-title {
-      color: #343a40;
-    }
-
-    .card-text {
-      color: #6c757d;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-clamp: 3; /* Define o número máximo de linhas */
-      -webkit-line-clamp: 3;
-      min-height: calc(1.5rem * 3);
-    }
-    
-    /* Estilo para o menu lateral */
-    .offcanvas {
-      background-color: #343a40;
-      /* Fundo escuro */
-      color: #fff;
-      /* Texto branco */
-    }
-
-    .offcanvas .offcanvas-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #ffc107;
-      /* Destaque para o título */
-    }
-
-    .offcanvas-body ul {
-      padding: 0;
-      margin: 0;
-      list-style: none;
-    }
-
-    .offcanvas-body ul li {
-      margin-bottom: 1rem;
-      /* Espaçamento entre os itens */
-    }
-
-    .offcanvas-body ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 1.2rem;
-      padding: 0.5rem 1rem;
-      display: block;
-      border-radius: 5px;
-    }
-
-    .offcanvas-body ul li a:hover {
-      background-color: #ffc107;
-      /* Fundo amarelo no hover */
-      color: #343a40;
-      /* Texto escuro no hover */
-    }
-
-    /* Botão principal */
-    .btn-primary {
-      background-color: #ffc107;
-      border: none;
-      color: #343a40;
-    }
-
-    .btn-primary:hover {
-      background-color: #e0a800;
-    }
-  </style>
 </head>
-
 <body>
 
   <!-- Menu lateral -->
@@ -172,7 +73,7 @@
     <p>&copy; 2024 GameClass. Todos os direitos reservados.</p>
   </footer>
 
-  <!-- Modal para Filtro -->
+  <!-- Modal para Filtro por matéria -->
   <div class="modal fade" id="filterMatterModal" tabindex="-1" aria-labelledby="filterMatterModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -199,6 +100,7 @@
     </div>
   </div>
 
+  <!-- Modal de nova questão -->
   <div class="modal fade" id="newQuestionModal" tabindex="-1" aria-labelledby="newQuestionModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -229,181 +131,28 @@
     </div>
   </div>
 
+  <!-- Modal para visualizar questão -->
+  <!-- Modal de visualização -->
+  <div class="modal fade" id="viewQuestionModal" tabindex="-1" aria-labelledby="viewQuestionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewQuestionModalLabel">GameClass</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalViewPostBody">
+          <!-- O conteúdo do post será inserido aqui -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
-
-<script>
-
-  // Form para criação de nova questão
-  const newQuestionForm = document.getElementById('newQuestionForm');
-
-  newQuestionForm.addEventListener('submit', function (event) {
-    event.preventDefault();
-    const question = document.getElementById('newQuestion').value;
-    const matterId = document.getElementById('selectMatterNewQuestion').value;
-
-    fetch('/posts/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        question: question,
-        matterId: matterId
-      })
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Erro na requisição: ${response.status}`);
-        }
-        window.location.href = '/index';
-      })
-  });
-
-  const CARDS_PER_PAGE = 8; // Quantidade de cards por página
-  const cardContainer = document.getElementById("cards-container");
-  const pagination = document.getElementById("pagination");
-
-  let cards = []; // Lista de cards recebida do backend
-  let currentPage = 1;
-  let url = '';
-
-  // Função para buscar os dados do backend
-  async function fetchCards(matterFilter) {
-    try {
-      if(matterFilter && matterFilter != "0") {
-        url = `/posts/matter/${matterFilter}`
-      } else {
-        url = '/posts/all'
-      }
-      const response = await fetch(url);
-      cards = await response.json();
-      renderPagination();
-      renderCards(currentPage);
-    } catch (error) {
-      console.error("Erro ao buscar dados dos cards:", error);
-    }
-  }
-
-  // Renderizar os cards da página atual
-  function renderCards(page) {
-    cardContainer.innerHTML = ""; // Limpar cards
-    const start = (page - 1) * CARDS_PER_PAGE;
-    const end = start + CARDS_PER_PAGE;
-    const cardsToShow = cards.slice(start, end);
-
-    cardsToShow.forEach(card => {
-      const cardHTML = `
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-          <div class="card shadow-sm">
-            <div class="card-body">
-              
-              <div class="d-flex justify-content-between mb-3">
-                <span>${card.username}</span>
-                <span class="badge ${card.userType === 'teacher' ? 'bg-danger' : 'bg-primary'}">${card.userType === 'teacher' ? 'Professor' : 'Aluno'}</span>
-              </div>
-
-              <div class="mb-3 card-text">
-                ${card.postQuestion}
-              </div>
-
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="text-primary">${card.commentsCount} comentários</span>
-                <button class="btn btn-primary">Visualizar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-      cardContainer.innerHTML += cardHTML;
-    });
-  }
-
-  // Renderizar os botões de paginação
-  function renderPagination() {
-    pagination.innerHTML = ""; // Limpar paginação
-    const totalPages = Math.ceil(cards.length / CARDS_PER_PAGE);
-
-    // Botão "Anterior"
-    const prevButton = document.createElement("li");
-    prevButton.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
-    prevButton.innerHTML = `<a class="page-link" href="#" id="prev-page">Anterior</a>`;
-    prevButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (currentPage > 1) {
-        currentPage--;
-        renderCards(currentPage);
-        renderPagination();
-      }
-    });
-    pagination.appendChild(prevButton);
-
-    // Botões de páginas
-    for (let i = 1; i <= totalPages; i++) {
-      const pageButton = document.createElement("li");
-      pageButton.className = `page-item ${i === currentPage ? "active" : ""}`;
-      pageButton.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
-      pageButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        currentPage = i;
-        renderCards(currentPage);
-        renderPagination();
-      });
-      pagination.appendChild(pageButton);
-    }
-
-    // Botão "Próximo"
-    const nextButton = document.createElement("li");
-    nextButton.className = `page-item ${currentPage === totalPages ? "disabled" : ""}`;
-    nextButton.innerHTML = `<a class="page-link" href="#" id="next-page">Próximo</a>`;
-    nextButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (currentPage < totalPages) {
-        currentPage++;
-        renderCards(currentPage);
-        renderPagination();
-      }
-    });
-    pagination.appendChild(nextButton);
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    fetchCards();
-    
-    fetch('/matters/all')
-      .then(response => response.json())
-      .then(data => {
-
-        const selectMatterNewQuestion = document.getElementById('selectMatterNewQuestion');
-        data.forEach(type => {
-          const option = document.createElement('option');
-          option.value = type.matterId;
-          option.textContent = type.matterName;
-          selectMatterNewQuestion.appendChild(option);
-        });
-
-        const selecMatterFilter = document.getElementById('selecMatterFilter');
-        data.forEach(type => {
-          const option = document.createElement('option');
-          option.value = type.matterId;
-          option.textContent = type.matterName;
-          selecMatterFilter.appendChild(option);
-        });
-
-      })
-      .catch(error => console.error('Erro ao carregar tipos de questões:', error));
-  })
-
-  const filterMatter = document.getElementById('filterMatterModal');
-
-  filterMatter.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const matterId = document.getElementById('selecMatterFilter').value;
-    fetchCards(matterId);
-
-    const filterModal = new bootstrap.Modal(document.getElementById("filterMatterModal"));
-    filterModal.hide();
-  })
-</script>
+<script th:src="@{/scripts/index.js}"></script>
