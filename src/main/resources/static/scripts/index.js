@@ -173,7 +173,7 @@ document.addEventListener('click', async function (event) {
           <div class = "mb-2" style = "text-align:center">
             <h4>${postData.username}</h4>
           </div>
-          <div class = "mb-2" id="questionModal" data-value="${postData.postId}">
+          <div class = "mb-2" id="questionModal">
             <p style="padding: 5px">${postData.postQuestion}</p>
           </div>
           <p><strong>Comentários:</strong> ${postData.commentsCount}</p>
@@ -181,7 +181,7 @@ document.addEventListener('click', async function (event) {
             <ul>
             ${commentsData.length > 0
             ? commentsData.map(comment =>
-              `<div class="comment-box">
+              `<div class="comment-box" id="commentBox" data-value="${comment.commentId}">
                 <div class="comment-header">
                   <p id="commentUser">${comment.username}</p>
                 </div>
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('star')) {
     const voteValue = event.target.getAttribute('data-value')
-    const postId = document.getElementById('questionModal').getAttribute('data-value')
+    const postId = document.getElementById('commentBox').getAttribute('data-value')
 
     fetch('/vote/update', {
       method: 'POST',
