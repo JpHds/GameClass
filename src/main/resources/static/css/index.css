@@ -99,7 +99,7 @@ footer {
 
 /* Modal */
 
-.questionModal {
+#questionModal {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,5 +107,56 @@ footer {
   background-color: grey;
   min-height: 200px;
   border-radius: 5px;
+}
 
+.comments {
+  max-height: 120px;
+  overflow-y: scroll;
+  overflow-x: visible;
+}
+
+.comments ul {
+  padding: 0;
+}
+
+.comment-box {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+  width: 100%;
+}
+
+.comment-header {
+  font-size: 1em;
+  color: rgb(71, 71, 223);
+  text-transform: uppercase;
+}
+
+.comment-body p {
+  margin: 12px 0;
+  font-size: 1em;
+  color: #333;
+}
+
+.comment-rating {
+  display: flex;
+  align-items: center;
+}
+
+.stars {
+  margin-left: 8px;
+  display: inline-flex;
+}
+
+.star {
+  font-size: 1.5em;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.star:hover,
+.star.selected {
+  color: gold;
 }

@@ -148,7 +148,7 @@ filterMatter.addEventListener('submit', (e) => {
   filterModal.hide();
 })
 
-// Preencher modal de visualização dos posts
+// =========================== Modal de visualização dos posts ===========================
 document.addEventListener('click', async function (event) {
   if (event.target.classList.contains('btnViewPost')) {
     const postId = event.target.getAttribute('data-id');
@@ -173,14 +173,33 @@ document.addEventListener('click', async function (event) {
           <div class = "mb-2" style = "text-align:center">
             <h4>${postData.username}</h4>
           </div>
-          <div class = "mb-2 questionModal">
+          <div class = "mb-2" id="questionModal" data-value="${postData.postId}">
             <p style="padding: 5px">${postData.postQuestion}</p>
           </div>
           <p><strong>Comentários:</strong> ${postData.commentsCount}</p>
           <div class="comments">
             <ul>
             ${commentsData.length > 0
-            ? commentsData.map(comment => `<li>${comment.textComment}</li>`).join('')
+            ? commentsData.map(comment =>
+              `<div class="comment-box">
+                <div class="comment-header">
+                  <p id="commentUser">${comment.username}</p>
+                </div>
+                <div class="comment-body">
+                  <p id="commentText">${comment.textComment}</p>
+                </div>
+                <div class="comment-rating">
+                  <span>Avaliação: </span>
+                  <div class="stars" data-selected-rating="0">
+                    <span class="star" data-value="1">☆</span>
+                    <span class="star" data-value="2">☆</span>
+                    <span class="star" data-value="3">☆</span>
+                    <span class="star" data-value="4">☆</span>
+                    <span class="star" data-value="5">☆</span>
+                  </div>
+                </div>
+              </div>`).join('')
+
             : '<li>Nenhum comentário disponível.</li>'
           }
             </ul>
@@ -194,7 +213,7 @@ document.addEventListener('click', async function (event) {
     }
   }
 });
-
+// =========================== Modal de visualização dos posts ===========================
 
 
 // =========================== Execução ao inicializar a página ===========================
@@ -224,3 +243,23 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => console.error('Erro ao carregar tipos de questões:', error));
 })
+
+document.addEventListener('click', function (event) {
+  if (event.target.classList.contains('star')) {
+    const voteValue = event.target.getAttribute('data-value')
+    const postId = document.getElementById('questionModal').getAttribute('data-value')
+
+    fetch('/vote/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        voteValue: voteValue, 
+        postId: postId
+      })
+    }
+    )
+  }
+});
+
