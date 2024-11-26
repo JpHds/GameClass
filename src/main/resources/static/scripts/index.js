@@ -170,36 +170,36 @@ document.addEventListener('click', async function (event) {
         modalBody.innerHTML = "";
         // Preenche o modal com os dados do post 
         modalBody.innerHTML = `
-          <div class = "mb-2" style = "text-align:center">
+          <div class="mb-2" style="text-align:center">
             <h4>${postData.username}</h4>
           </div>
-          <div class = "mb-2 p-3" id="questionModal">
+          <div class="mb-2 p-3" id="questionModal">
             <p>${postData.postQuestion}</p>
           </div>
           <p><strong>Comentários:</strong> ${postData.commentsCount}</p>
           <div class="comments">
             <ul>
-            ${commentsData.length > 0
-            ? commentsData.map(comment =>
-              `<div class="comment-box" id="commentBox" data-value="${comment.commentId}">
-                <div class="comment-header">
-                  <p id="commentUser">${comment.username}</p>
-                </div>
-                <div class="comment-body">
-                  <p id="commentText">${comment.textComment}</p>
-                </div>
-                <div class="comment-rating">
-                  <span>Avaliação: </span>
-                  <div class="stars" data-selected-rating="0">
-                    <span class="star" data-value="1">☆</span>
-                    <span class="star" data-value="2">☆</span>
-                    <span class="star" data-value="3">☆</span>
-                    <span class="star" data-value="4">☆</span>
-                    <span class="star" data-value="5">☆</span>
-                  </div>
-                </div>
-              </div>`).join('')
-
+              ${commentsData.length > 0
+            ? commentsData.map(comment => `
+                  <div class="comment-box" id="commentBox" data-value="${comment.commentId}">
+                    <div class="comment-header">
+                      <p id="commentUser">${comment.username}</p>
+                    </div>
+                    <div class="comment-body">
+                      <p id="commentText">${comment.textComment}</p>
+                    </div>
+                    <div class="comment-rating">
+                      <span>Avaliação: </span>
+                      <div class="stars" data-selected-rating="${comment.voteValue || 0}">
+                        ${Array.from({ length: 5 }, (_, i) => `
+                          <span 
+                            class="star ${i < (comment.voteValue || 0) ? 'selected' : ''}" 
+                            data-value="${i + 1}">
+                              ☆
+                          </span>`).join('')}
+                      </div>
+                    </div>
+                  </div>`).join('')
             : '<li>Nenhum comentário disponível.</li>'
           }
             </ul>
@@ -213,8 +213,8 @@ document.addEventListener('click', async function (event) {
     }
   }
 });
-// =========================== Modal de visualização dos posts ===========================
 
+// =========================== Modal de visualização dos posts ===========================
 
 // =========================== Execução ao inicializar a página ===========================
 document.addEventListener('DOMContentLoaded', () => {
@@ -247,9 +247,29 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('star')) {
     const star = event.target;
+    const starsContainer = star.closest('.stars');
     const commentBox = star.closest('.comment-box');
 
-    const voteValue = star.dataset.value;
+    // Verifica se o contêiner existe antes de continuar
+    if (!starsContainer || !commentBox) {
+      console.error('Contêiner pai ou comment-box não encontrado.');
+      return;
+    }
+
+    const clickedValue = parseInt(star.dataset.value, 10);
+
+    const allStars = starsContainer.querySelectorAll('.star');
+
+    allStars.forEach(star => {
+      const starValue = parseInt(star.dataset.value, 10);
+      if (starValue <= clickedValue) {
+        star.classList.add('selected');
+      } else {
+        star.classList.remove('selected');
+      }
+    });
+
+    const voteValue = clickedValue;
     const commentId = commentBox.dataset.value;
 
     fetch('/votes/upsert', {
@@ -258,11 +278,11 @@ document.addEventListener('click', function (event) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        voteValue: voteValue, 
+        voteValue: voteValue,
         commentId: commentId
       })
-    }
-    )
+    })
   }
 });
+
 

@@ -13,17 +13,21 @@ import com.game_class.models.Comment;
 import jakarta.transaction.Transactional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query("SELECT new com.game_class.dtos.CommentDTO(c.commentId, c.textComment, u.username) " +
+    @Query("SELECT new com.game_class.dtos.CommentDTO(c.commentId, c.textComment, u.username, " +
+            "v.voteValue) " +
             "FROM Comment c " +
             "LEFT JOIN c.post p " +
             "LEFT JOIN c.user u " +
-            "WHERE p.postId = :postId ")
-    List<CommentDTO> getCommentsByPostId(@Param("postId") Long postId);
-    
+            "LEFT JOIN Vote v ON v.comment.commentId = c.commentId AND v.user.userId = :userId " +
+            "WHERE p.postId = :postId")
+    List<CommentDTO> getCommentsByPostId(
+            @Param("postId") Long postId,
+            @Param("userId") Long userId);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE Comment " +
-                    "SET voteCount = :votesAmount " +
-                    "WHERE commentId = :commentId")
+            "SET voteCount = :votesAmount " +
+            "WHERE commentId = :commentId")
     int upsertVoteCount(@Param("votesAmount") int votesAmount, @Param("commentId") Long commentId);
 }
