@@ -173,8 +173,8 @@ document.addEventListener('click', async function (event) {
           <div class = "mb-2" style = "text-align:center">
             <h4>${postData.username}</h4>
           </div>
-          <div class = "mb-2" id="questionModal">
-            <p style="padding: 5px">${postData.postQuestion}</p>
+          <div class = "mb-2 p-3" id="questionModal">
+            <p>${postData.postQuestion}</p>
           </div>
           <p><strong>Comentários:</strong> ${postData.commentsCount}</p>
           <div class="comments">
@@ -246,17 +246,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('star')) {
-    const voteValue = event.target.getAttribute('data-value')
-    const postId = document.getElementById('commentBox').getAttribute('data-value')
+    const star = event.target;
+    const commentBox = star.closest('.comment-box');
 
-    fetch('/vote/update', {
+    const voteValue = star.dataset.value;
+    const commentId = commentBox.dataset.value;
+
+    fetch('/votes/upsert', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         voteValue: voteValue, 
-        postId: postId
+        commentId: commentId
       })
     }
     )

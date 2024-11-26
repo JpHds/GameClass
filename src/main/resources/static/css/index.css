@@ -106,10 +106,10 @@ footer {
   text-align: center;
   background-color: grey;
   border-radius: 5px;
+  min-height: 35vh;
 }
 
 .comments {
-  min-height: 150px;
   max-height: 200px;
   overflow-y: auto;
   overflow-x: visible;
