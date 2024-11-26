@@ -67,7 +67,7 @@ function renderCards(page) {
             
             <div class="d-flex justify-content-between mb-3">
               <span>${card.username}</span>
-              <span class="badge ${card.userType === 'TEACHER' ? 'bg-danger' : 'bg-primary'}">${card.userType === 'TEACHER' ? 'Professor' : 'Aluno'}</span>
+              <span class="badge ${card.userType === 'TEACHER' ? 'bg-danger' : 'bg-primary'}">${card.userType === 'TEACHER' ? 'Professor' : 'Estudante'}</span>
             </div>
 
             <div class="mb-3 card-text">

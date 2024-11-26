@@ -14,8 +14,37 @@ loginForm.addEventListener('submit', function (event) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Erro na requisição: ${response.status}`);
+                window.location.href = '/auth?loginError'
+            } else {
+                window.location.href = '/index';
             }
-            window.location.href = '/index'
         })
 });
+
+const registerForm = document.getElementById('registerForm');
+
+registerForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const username = document.getElementById('registerUsername').value;
+    const password = document.getElementById('registerPassword').value;
+    const email = document.getElementById('registerEmail').value;
+    const userType = document.getElementById('registerUserType').value;
+
+    fetch('/auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password, email, userType })
+    })
+        .then(response => {
+            if (!response.ok) {
+                window.location.href = '/auth?registerError'
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+})
+  

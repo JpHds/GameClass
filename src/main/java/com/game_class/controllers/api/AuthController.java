@@ -43,7 +43,7 @@ public class AuthController {
             authenticationService.login(user);
             return cookieService.createTokenCookie(new User(user.username(), user.password()));
         } catch (Exception e) {
-            throw new RuntimeException("Usuário ou senha inválidos.");
+            return ResponseEntity.badRequest().build();
         }
     }
 }
