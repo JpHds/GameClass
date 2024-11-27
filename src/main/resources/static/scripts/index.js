@@ -142,6 +142,8 @@ const filterMatter = document.getElementById('filterMatterModal');
 filterMatter.addEventListener('submit', (e) => {
   e.preventDefault();
   const matterId = document.getElementById('selecMatterFilter').value;
+
+  currentPage = 1;
   fetchCards(matterId);
 
   const filterModal = new bootstrap.Modal(document.getElementById("filterMatterModal"));
@@ -249,12 +251,6 @@ document.addEventListener('click', function (event) {
     const star = event.target;
     const starsContainer = star.closest('.stars');
     const commentBox = star.closest('.comment-box');
-
-    // Verifica se o contêiner existe antes de continuar
-    if (!starsContainer || !commentBox) {
-      console.error('Contêiner pai ou comment-box não encontrado.');
-      return;
-    }
 
     const clickedValue = parseInt(star.dataset.value, 10);
 

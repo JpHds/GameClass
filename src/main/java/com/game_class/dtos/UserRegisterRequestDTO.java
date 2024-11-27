@@ -7,5 +7,6 @@ import jakarta.persistence.Enumerated;
 
 public record UserRegisterRequestDTO(String username,
                                         String email, 
-                                        String password, 
+                                        String password,
+                                        String cpf,
                                         @Enumerated(EnumType.STRING) UserType userType) {}

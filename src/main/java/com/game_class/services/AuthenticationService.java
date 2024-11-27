@@ -35,7 +35,7 @@ public class AuthenticationService {
             }
         }
 
-        User newUser = new User(user.username(), user.email(), passwordEncoder.encode(user.password()),
+        User newUser = new User(user.username(), user.email(), passwordEncoder.encode(user.password()), user.cpf(),
                 user.userType());
         userRepository.save(newUser);
 

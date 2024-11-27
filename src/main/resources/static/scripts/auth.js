@@ -28,6 +28,7 @@ registerForm.addEventListener('submit', function (event) {
     const username = document.getElementById('registerUsername').value;
     const password = document.getElementById('registerPassword').value;
     const email = document.getElementById('registerEmail').value;
+    const cpf = document.getElementById('registerCpf').value;
     const userType = document.getElementById('registerUserType').value;
 
     fetch('/auth/register', {
@@ -35,11 +36,13 @@ registerForm.addEventListener('submit', function (event) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password, email, userType })
+        body: JSON.stringify({ username, password, email, cpf, userType })
     })
         .then(response => {
             if (!response.ok) {
                 window.location.href = '/auth?registerError'
+            } else {
+                window.location.href = '/';
             }
         })
         .catch(error => {
@@ -47,4 +50,3 @@ registerForm.addEventListener('submit', function (event) {
         });
 
 })
-  

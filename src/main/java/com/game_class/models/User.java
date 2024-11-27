@@ -25,10 +25,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User implements UserDetails {
 
-    public User(String username, String email, String password, UserType userType) {
+    public User(String username, String email, String password, String userCpf, UserType userType) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.userCpf = userCpf;
         this.userType = userType;
     }
 
@@ -44,6 +45,9 @@ public class User implements UserDetails {
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
+
+    @Column(name = "userCpf", nullable = false, unique = true, length = 11)
+    private String userCpf;
 
     @Column(name = "user_email", nullable = false, unique = true)
     private String email;
