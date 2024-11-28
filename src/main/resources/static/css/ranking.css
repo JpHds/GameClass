@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.container {
+  height: 100%;
+}
+
+/* Estilo para o título */
+#applicationTitle {
+  font-family: "Poetsen One", sans-serif;
+  color: #0078f0;
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#menuButton {
+  position: fixed;
+}
+
+/* Rank Container */
+#rankContainer {
+  flex-direction: column;
+  width: 100%;
+  height: 80vh;
+  min-height: 600px;
+  background-color: #343a40;
+  text-align: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+#rankHeader {
+  padding-top: 20px;
+}
+
+#rankHeader h1 {
+  color: #ffc107;
+}
+
+#rankHeader p {
+  color: white;
+}
+
+#rankHeader hr {
+  margin: 0;
+  color: white;
+}
+
+#rankBody {
+  height: 80%;
+  padding: 15px 0;
+}
+
+#rankBody ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+  margin-top: 5px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#rankBody ul li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffc107;
+  border-radius: 5px;
+  margin: 0 5px;
+  line-height: 2rem;
+  margin: 0 15px;
+}
+
+#rankBody ul li {
+  transition: background 0.3s;
+}
+
+#rankBody ul li:hover {
+  background: #ffa000; /* uma tonalidade mais escura ou diferente */
+}
+
+/* Ícone para o primeiro lugar */
+#rankBody ul li:nth-child(1)::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url('../img/first_place.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Ícone para o segundo lugar */
+#rankBody ul li:nth-child(2)::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url('../img/second_place.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Ícone para o terceiro lugar */
+#rankBody ul li:nth-child(3)::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url('../img/third_place.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Ícone para o quarto lugar em diante*/
+#rankBody ul li:nth-child(n+4)::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url('../img/always_places.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Estilo para o título */
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #343a40;
+  margin: 2rem 0;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: #343a40;
+}
+
+.card-text {
+  color: #6c757d;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-clamp: 3;
+  /* Define o número máximo de linhas */
+  -webkit-line-clamp: 3;
+  min-height: calc(1.5rem * 3);
+}
+
+/* Estilo para o menu lateral */
+.offcanvas {
+  background-color: #343a40;
+  /* Fundo escuro */
+  color: #fff;
+  /* Texto branco */
+}
+
+.offcanvas .offcanvas-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffc107;
+  /* Destaque para o título */
+}
+
+.offcanvas-body ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.offcanvas-body ul li {
+  margin-bottom: 1rem;
+  /* Espaçamento entre os itens */
+}
+
+.offcanvas-body ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  display: block;
+  border-radius: 5px;
+}
+
+.offcanvas-body ul li a:hover {
+  background-color: #ffc107;
+  /* Fundo amarelo no hover */
+  color: #343a40;
+  /* Texto escuro no hover */
+}
+
+/* Botão principal */
+.btn-primary {
+  background-color: #ffc107;
+  border: none;
+  color: #343a40;
+}
+
+.btn-primary:hover {
+  background-color: #e0a800;
+}
+
+/* Modal */
+
+#questionModal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: grey;
+  border-radius: 5px;
+  min-height: 35vh;
+}
+
+.comments {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: visible;
+}
+
+.comments ul {
+  padding: 0;
+}
+
+.comment-box {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+  width: 100%;
+}
+
+.comment-header {
+  font-size: 1em;
+  color: rgb(71, 71, 223);
+  text-transform: uppercase;
+}
+
+.comment-body p {
+  margin: 12px 0;
+  font-size: 1em;
+  color: #333;
+}
+
+.comment-rating {
+  display: flex;
+  align-items: center;
+}
+
+.stars {
+  margin-left: 8px;
+  display: inline-flex;
+}
+
+.star {
+  font-size: 1.5em;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.star:hover,
+.star.selected {
+  color: gold;
+}
+
+@media (max-width: 450px) {
+  #applicationTitle {
+    margin-right: 0 !important;
+  }
+}

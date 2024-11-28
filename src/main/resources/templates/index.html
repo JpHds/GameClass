@@ -20,26 +20,29 @@
   <script src="https://cdn.jsdelivr.net/npm/datatables.net@2.0.1/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/datatables.net-bs5@2.0.1/js/dataTables.bootstrap5.min.js"></script>
 </head>
+
 <body>
 
   <!-- Menu lateral -->
   <nav class="navbar bg-light">
     <div class="container-fluid">
-      <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"
+      <button id="menuButton" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"
         aria-controls="menuLateral">
         ☰ Menu
       </button>
+      <h1 class="navbar-brand mb-0 mx-auto" id="applicationTitle">GameClass</h1>
     </div>
   </nav>
 
   <div class="offcanvas offcanvas-start" tabindex="-1" id="menuLateral" aria-labelledby="menuLateralLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="menuLateralLabel">GameClass</h5>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <h1 class="offcanvas-title" id="menuLateralLabel">GameClass</h>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
       <ul class="list-unstyled">
         <li><a href="/" class="text-decoration-none">Início</a></li>
+        <li><a href="/ranking" class="text-decoration-none">Ranking dos Alunos</a></li>
         <li><a href="/my" class="text-decoration-none">Minhas publicações</a></li>
         <li><a href="/logout" class="text-decoration-none">Sair</a></li>
       </ul>
@@ -61,7 +64,7 @@
 
 
     <!-- Cards em 4 colunas -->
-    <div class="row g-4" id="cards-container"></div>
+    <div class="row g-4" id="cards-container" style="height: 100%;"></div>
   </div>
   <!-- Paginação dos cards -->
   <nav>
@@ -113,7 +116,8 @@
           <div class="modal-body">
             <div class="mb-3">
               <label for="newQuestion" class="form-label">Escreva sua pergunta:</label>
-              <textarea class="form-control" name="newQuestion" id="newQuestion" rows="4" style="resize: none;" required></textarea>
+              <textarea class="form-control" name="newQuestion" id="newQuestion" rows="4" style="resize: none;"
+                required></textarea>
             </div>
 
             <div class="mb-3">
@@ -133,7 +137,8 @@
 
   <!-- Modal para visualizar questão -->
   <!-- Modal de visualização -->
-  <div class="modal fade" id="viewQuestionModal" tabindex="-1" aria-labelledby="viewQuestionModalLabel" aria-hidden="true">
+  <div class="modal fade" id="viewQuestionModal" tabindex="-1" aria-labelledby="viewQuestionModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -150,9 +155,8 @@
     </div>
   </div>
 
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script th:src="@{/scripts/index.js}"></script>
 </body>
 
 </html>
-<script th:src="@{/scripts/index.js}"></script>

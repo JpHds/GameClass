@@ -29,4 +29,9 @@ public class HomeController {
     public String myPublishesPage() {
         return "my-publishes";
     }
+
+    @GetMapping("/ranking")
+    public String rankingPage() {
+        return "ranking";
+    }
 }

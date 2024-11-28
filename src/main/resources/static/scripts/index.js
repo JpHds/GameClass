@@ -43,8 +43,23 @@ async function fetchCards(matterFilter) {
     }
     const response = await fetch(url);
     cards = await response.json();
-    renderPagination();
-    renderCards(currentPage);
+
+    if (cards.length > 0) {
+      renderPagination();
+      renderCards(currentPage);
+    } else {
+      cardContainer.innerHTML = `<div id="notFoundContainer" class="d-flex align-items-center">
+                                  <picture>
+                                    <source media="(max-width: 988px)" srcset="/img/without_publishes_mobile.png" width="100%"/>
+                                    <img src="img/without_publishes.png" alt="Not found publishes." width="100%"/>
+                                  </picture>
+                                </div>`;
+      // cardContainer.innerHTML = `<img srcset="/img/without_publishes_mobile.png 800w, /img/without_publishes.png 1920w" 
+      //                           sizes="(max-width: 988px) 800px, 100vw" 
+      //                           src="/img/without_publishes_mobile.png" 
+      //                           alt="Not found">
+      //                           `;
+    }
   } catch (error) {
     console.error("Erro ao buscar dados dos cards:", error);
   }
