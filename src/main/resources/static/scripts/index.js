@@ -1,6 +1,5 @@
-const newQuestionForm = document.getElementById('newQuestionForm');
-
 // Submit para criar nova questão
+const newQuestionForm = document.getElementById('newQuestionForm');
 newQuestionForm.addEventListener('submit', function (event) {
   event.preventDefault();
   const question = document.getElementById('newQuestion').value;
@@ -34,10 +33,10 @@ let cards = []; // Lista de cards recebida do backend
 let currentPage = 1;
 let url = '';
 
-async function fetchCards(matterFilter) {
+async function fetchCards(matterId) {
   try {
-    if (matterFilter && matterFilter != "0") {
-      url = `/posts/matter/${matterFilter}`
+    if (matterId && matterId != "0") {
+      url = `/posts/matter/${matterId}`
     } else {
       url = '/posts/all'
     }
@@ -54,11 +53,6 @@ async function fetchCards(matterFilter) {
                                     <img src="img/without_publishes.png" alt="Not found publishes." width="100%"/>
                                   </picture>
                                 </div>`;
-      // cardContainer.innerHTML = `<img srcset="/img/without_publishes_mobile.png 800w, /img/without_publishes.png 1920w" 
-      //                           sizes="(max-width: 988px) 800px, 100vw" 
-      //                           src="/img/without_publishes_mobile.png" 
-      //                           alt="Not found">
-      //                           `;
     }
   } catch (error) {
     console.error("Erro ao buscar dados dos cards:", error);
@@ -148,8 +142,6 @@ function renderPagination() {
   });
   pagination.appendChild(nextButton);
 }
-
-// =========================== Criação dos cards dinâmicos ===========================
 
 // Filtrar posts por matéria
 const filterMatter = document.getElementById('filterMatterModal');

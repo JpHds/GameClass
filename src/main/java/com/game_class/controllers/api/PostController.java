@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,10 +51,20 @@ public class PostController {
         return postsList;
     }
 
-    @GetMapping("matter/{matterId}")
-    public List<PostWithCommentsCountDTO> getPostsByMatter(@PathVariable("matterId") long matterId) {
+    @GetMapping("/matter/{matterId}")
+    public List<PostWithCommentsCountDTO> getPostsByMatter(@PathVariable("matterId") Long matterId) {
         if (matterId != 0) {
             return postRepository.findPostsWithCommentsCountByMatterId(matterId);
+        } else {
+            return postRepository.findAllPostsWithCommentsCount();
+        }
+    }
+
+    @GetMapping("/matter/{matterId}/my")
+    public List<PostWithCommentsCountDTO> getPostsByMatterAndSessionUser(@PathVariable("matterId") Long matterId,
+            @AuthenticationPrincipal User user) {
+        if (matterId != 0) {
+            return postRepository.findPostsWithCommentsCountByMatterIdAndUserSession(matterId, user.getUserId());
         } else {
             return postRepository.findAllPostsWithCommentsCount();
         }
@@ -67,6 +79,16 @@ public class PostController {
     public List<PostWithCommentsCountDTO> getPostsBySessionUserId() {
         User user = (User) this.authenticationService.getCurrentAuthentication().getPrincipal();
         return postRepository.findPostsByUserId(user.getUserId());
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+        try {
+            postRepository.deleteById(postId);
+            return ResponseEntity.noContent().build(); 
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

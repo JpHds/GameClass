@@ -36,6 +36,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                         "LEFT JOIN p.user u " +
                         "LEFT JOIN Comment c ON c.post = p " +
                         "LEFT JOIN p.postMatter m " +
+                        "WHERE m.matterId = :matterId " +
+                        "AND u.userId = :userId " +
+                        "GROUP BY p.postId, u.username, p.postQuestion, u.userType")
+        List<PostWithCommentsCountDTO> findPostsWithCommentsCountByMatterIdAndUserSession(@Param("matterId") Long matterId, @Param("userId") Long userId);
+
+        @Query("SELECT new com.game_class.dtos.PostWithCommentsCountDTO(" +
+                        "p.postId, u.username, p.postQuestion, u.userType, COUNT(DISTINCT c.commentId)) " +
+                        "FROM Post p " +
+                        "LEFT JOIN p.user u " +
+                        "LEFT JOIN Comment c ON c.post = p " +
+                        "LEFT JOIN p.postMatter m " +
                         "WHERE u.userId = :userId " +
                         "GROUP BY p.postId, u.username, p.postQuestion, u.userType")
         List<PostWithCommentsCountDTO> findPostsByUserId(@Param("userId") Long userId);
