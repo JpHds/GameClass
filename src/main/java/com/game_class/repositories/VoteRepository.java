@@ -14,9 +14,10 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     @Transactional
     @Modifying
     @Query(value = "INSERT INTO votes (user_id, comment_id, vote_value) " +
-                    "VALUES (:userId, :commentId, :voteValue) " +
-                    "ON DUPLICATE KEY UPDATE vote_value = VALUES(vote_value)", 
-                    nativeQuery = true)
+               "VALUES (:userId, :commentId, :voteValue) " +
+               "ON CONFLICT (user_id, comment_id) " +
+               "DO UPDATE SET vote_value = EXCLUDED.vote_value", 
+               nativeQuery = true)
     int upsertVote(@Param("userId") Long userId, @Param("commentId") Long commentId,
             @Param("voteValue") Long voteValue);
 
