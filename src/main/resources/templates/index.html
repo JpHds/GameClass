@@ -147,7 +147,12 @@
         <div class="modal-body" id="modalViewPostBody">
           <!-- O conteúdo do post será inserido aqui -->
         </div>
-        <div class="modal-footer">
+        <div id="newCommentSection" class="d-none">
+          <textarea id="newCommentText" class="form-control ms-3 w-75" rows="3" placeholder="Escreva seu comentário..."></textarea>
+          <button id="submitCommentBtn" class="btn btn-primary mt-2 ms-3">Enviar Comentário</button>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button id="newCommentBtn" class="btn btn-outline-primary">Novo comentário</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
         </div>
       </div>

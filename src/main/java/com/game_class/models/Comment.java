@@ -37,4 +37,10 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Comment(String textComment, Post post, User user){
+        this.textComment = textComment;
+        this.post = post;
+        this.user = user;
+    }
 }

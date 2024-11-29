@@ -38,4 +38,6 @@ public class VoteController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    
 }

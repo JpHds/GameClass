@@ -253,6 +253,82 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(error => console.error('Erro ao carregar tipos de questões:', error));
 })
 
+document.addEventListener('DOMContentLoaded', function () {
+  const newCommentBtn = document.getElementById('newCommentBtn');
+  const newCommentSection = document.getElementById('newCommentSection');
+  const submitCommentBtn = document.getElementById('submitCommentBtn');
+  const newCommentText = document.getElementById('newCommentText');
+  const commentsSection = document.getElementById('modalViewPostBody');
+
+  newCommentBtn.addEventListener('click', function () {
+    newCommentSection.classList.remove('d-none');
+    newCommentBtn.classList.add('d-none');
+  });
+
+  let postId = null;
+
+  const viewQuestionModal = document.getElementById('viewQuestionModal');
+  viewQuestionModal.addEventListener('show.bs.modal', function () {
+    postId = viewQuestionModal.getAttribute('data-id');
+  });
+
+  submitCommentBtn.addEventListener('click', function () {
+    const comment = newCommentText.value.trim();
+    if (comment) {
+      sendComment(postId, comment);
+    }
+  });
+
+  function sendComment(postId, comment) {
+    fetch('comments/new', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        postId: postId,
+        comment: comment
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        displayComment(data.username, data.commentId, data.textComment);
+        newCommentText.value = '';
+        newCommentSection.classList.add('d-none');
+        newCommentBtn.classList.remove('d-none');
+      })
+      .catch(error => {
+        console.error('Erro ao enviar comentário:', error);
+        alert('Erro ao enviar comentário. Tente novamente!');
+      });
+  }
+
+  function displayComment(username, commentId, textComment) {
+    const commentDiv = document.createElement('div');
+    commentDiv.classList.add('comment');
+    commentDiv.innerHTML = `
+                  <div class="comment-box" id="commentBox" data-value="${commentId}">
+                    <div class="comment-header">
+                      <p id="commentUser">${username}</p>
+                    </div>
+                    <div class="comment-body">
+                      <p id="commentText">${textComment}</p>
+                    </div>
+                    <div class="comment-rating">
+                      <span>Avaliação: </span>
+                      <div class="stars">
+                        ${Array.from({ length: 5 }, (_, i) => `
+                          <span class="star" data-value="${i + 1}">
+                            ☆
+                          </span>`).join('')}
+                      </div>
+                    </div>
+                  </div>`;
+    commentsSection.appendChild(commentDiv);
+  }
+});
+
+
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('star')) {
     const star = event.target;
@@ -288,4 +364,9 @@ document.addEventListener('click', function (event) {
   }
 });
 
+$('#viewQuestionModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget);
+  var dataId = button.data('id');
 
+  $(this).attr('data-id', dataId);
+});

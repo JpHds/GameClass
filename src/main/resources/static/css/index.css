@@ -104,6 +104,10 @@ footer {
   /* Texto escuro no hover */
 }
 
+#newCommentText {
+  resize: none;
+}
+
 /* Botão principal */
 .btn-primary {
   background-color: #ffc107;
