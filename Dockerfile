@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Copia o .jar gerado na etapa de build
 COPY --from=build ./app/target/*.jar ./game_class.jar
-COPY .env /app/.env
+# COPY .env /app/.env
 
 # Configurando o entrypoint
 # ENTRYPOINT ["java", "-jar", "game_class.jar"]
