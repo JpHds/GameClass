@@ -20,7 +20,6 @@ import com.game_class.models.Post;
 import com.game_class.models.User;
 import com.game_class.repositories.MatterRepository;
 import com.game_class.repositories.PostRepository;
-import com.game_class.services.AuthenticationService;
 
 @RestController
 @RequestMapping("/posts")
@@ -30,15 +29,10 @@ public class PostController {
     private PostRepository postRepository;
 
     @Autowired
-    private AuthenticationService authenticationService;
-
-    @Autowired
     private MatterRepository matterRepository;
 
     @PostMapping("/new")
-    public ResponseEntity<?> createNewPost(@RequestBody PostDTO post) {
-        User user = (User) this.authenticationService.getCurrentAuthentication().getPrincipal();
-
+    public ResponseEntity<?> createNewPost(@RequestBody PostDTO post, @AuthenticationPrincipal User user) {
         Matter matter = matterRepository.findByMatterId(post.matterId());
 
         postRepository.save(new Post(post.question(), matter, user));
@@ -76,8 +70,7 @@ public class PostController {
     }
 
     @GetMapping("/myPublishes")
-    public List<PostWithCommentsCountDTO> getPostsBySessionUserId() {
-        User user = (User) this.authenticationService.getCurrentAuthentication().getPrincipal();
+    public List<PostWithCommentsCountDTO> getPostsBySessionUserId(@AuthenticationPrincipal User user) {
         return postRepository.findPostsByUserId(user.getUserId());
     }
 

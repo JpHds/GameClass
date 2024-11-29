@@ -2,6 +2,7 @@ package com.game_class.controllers.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,9 @@ public class VoteController {
     private CommentRepository commentRepository;
 
     @PostMapping("/upsert")
-    public ResponseEntity<?> upsertVote(@RequestBody VoteDTO vote) {
+    public ResponseEntity<?> upsertVote(@RequestBody VoteDTO vote, @AuthenticationPrincipal User userAuthenticated) {
         try {
-            User user = (User) this.authenticationService.getCurrentAuthentication().getPrincipal();
-            voteRepository.upsertVote(user.getUserId(), vote.commentId(), vote.voteValue());
+            voteRepository.upsertVote(userAuthenticated.getUserId(), vote.commentId(), vote.voteValue());
             int votesAmount = voteRepository.getCountVotes(vote.commentId());
             commentRepository.upsertVoteCount(votesAmount, vote.commentId());
             return ResponseEntity.ok().build();

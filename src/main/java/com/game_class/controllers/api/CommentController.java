@@ -40,10 +40,9 @@ public class CommentController {
     AuthenticationService authenticationService;
 
     @GetMapping("/{postId}")
-    public ResponseEntity<List<CommentDTO>> getCommentsByPostId(@PathVariable("postId") Long postId) {
-        User user = (User) this.authenticationService.getCurrentAuthentication().getPrincipal();
+    public ResponseEntity<List<CommentDTO>> getCommentsByPostId(@PathVariable("postId") Long postId, @AuthenticationPrincipal User userAuthenticated) {
 
-        List<CommentDTO> comments = commentRepository.getCommentsByPostId(postId, user.getUserId());
+        List<CommentDTO> comments = commentRepository.getCommentsByPostId(postId, userAuthenticated.getUserId());
 
         if (comments == null || comments.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -55,11 +54,11 @@ public class CommentController {
     @PostMapping("/new")
     public ResponseEntity<?> createComment(@RequestBody NewCommentDTO comment, @AuthenticationPrincipal User userAuthenticated) {
         Post post = postRepository.findById(comment.postId()).orElse(null);
-        User user = userRepository.findById(userAuthenticated.getUserId()).orElse(null);
-        Comment newComment = new Comment(comment.comment(), post, user);
+
+        Comment newComment = new Comment(comment.comment(), post, userAuthenticated);
         commentRepository.save(newComment);
 
-        CommentResponseDTO response = new CommentResponseDTO(newComment.getCommentId(), newComment.getTextComment(), user.getUsername());
+        CommentResponseDTO response = new CommentResponseDTO(newComment.getCommentId(), newComment.getTextComment(), userAuthenticated.getUsername());
         return ResponseEntity.ok(response);
     }
 
