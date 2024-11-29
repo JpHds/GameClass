@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .  
+      dockerfile: Dockerfile
+    container_name: game_class
+    ports:
+      - "8080:8080" 
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:${DB_PORT}/${DB_NAME}?useTimezone=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      TOKEN_PASS: ${TOKEN_PASS}
+      LOGIN_VALIDATE_HOURS: ${LOGIN_VALIDATE_HOURS}
