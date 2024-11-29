@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
     @GetMapping("/auth")
-    public String authPage(@RequestParam(value = "loginError", required = false) String loginError, @RequestParam(name = "registerError", required = false) String registerError, Model model) {
+    public String authPage(@RequestParam(value = "loginError", required = false) String loginError, @RequestParam(name = "registerError", required = false) String registerError, @RequestParam(name = "registerSuccess", required = false) String registerSuccess, Model model) {
         if (loginError != null) {
             model.addAttribute("loginError", "Usuário e/ou senha inválidos.");
         }
@@ -17,6 +17,10 @@ public class HomeController {
             model.addAttribute("registerError", "Nome de usuário e/ou email já está em uso.");
         }
         
+        if(registerSuccess != null) {
+            model.addAttribute("registerSuccess", "Registrado com sucesso.");
+        }
+
         return "auth";
     }
 

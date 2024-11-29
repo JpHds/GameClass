@@ -25,6 +25,10 @@
       <p class="lead">Facilitando o dia a dia escolar a cada passo.</p>
     </header>
 
+    <div id="loginSuccess" th:if="${registerSuccess}" th:text="${registerSuccess}" class="loginSuccess bg-success">
+      Cadastro realizado com sucesso!
+    </div>
+
     <div class="container body-content">
       <div class="row main-content">
         
@@ -78,6 +82,7 @@
                 name="registerCpf"
                 id="registerCpf"
                 placeholder="Digite seu CPF"
+                maxlength="14"
                 required
               />
               <i class="fas fa-lock icon"></i>

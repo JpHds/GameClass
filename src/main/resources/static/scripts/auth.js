@@ -28,7 +28,7 @@ registerForm.addEventListener('submit', function (event) {
     const username = document.getElementById('registerUsername').value;
     const password = document.getElementById('registerPassword').value;
     const email = document.getElementById('registerEmail').value;
-    const cpf = document.getElementById('registerCpf').value;
+    const cpf = cpfFormat(document.getElementById('registerCpf').value);
     const userType = document.getElementById('registerUserType').value;
 
     fetch('/auth/register', {
@@ -42,7 +42,7 @@ registerForm.addEventListener('submit', function (event) {
             if (!response.ok) {
                 window.location.href = '/auth?registerError'
             } else {
-                window.location.href = '/';
+                window.location.href = '/auth?registerSuccess';
             }
         })
         .catch(error => {
@@ -50,3 +50,38 @@ registerForm.addEventListener('submit', function (event) {
         });
 
 })
+window.onload = function () {
+    var mensagem = document.getElementById("loginSuccess");
+
+    mensagem.style.display = "block";
+
+    setTimeout(function () {
+        mensagem.style.animation = "fadeOut 2s forwards";
+    }, 2000);
+};
+
+document.getElementById('registerCpf').addEventListener('input', function (event) {
+    let input = event.target;
+    let valor = input.value;
+
+    valor = valor.replace(/\D/g, "");
+
+    if (valor.length <= 11) {
+        if (valor.length <= 3) {
+            input.value = valor;
+        } else if (valor.length <= 6) {
+            input.value = valor.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+        } else if (valor.length <= 9) {
+            input.value = valor.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+        } else {
+            input.value = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+        }
+    }
+});
+
+function cpfFormat(cpf) {
+    cpf = cpf.replace(/\D/g, "");
+    return cpf;
+}
+
+

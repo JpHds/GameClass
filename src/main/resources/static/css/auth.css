@@ -1,19 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
 
-html, body {
-    background-color: #f8f9fa; /* Cor de fundo clara */
-    height: 100%; /* Altura total da tela */
+html,
+body {
+    background-color: #f8f9fa;
+    /* Cor de fundo clara */
+    height: 100%;
+    /* Altura total da tela */
 }
 
 /* Header CSS */
 
 header {
-    flex: 0 0 auto; /* O cabeçalho ocupa apenas o espaço necessário */
+    flex: 0 0 auto;
+    /* O cabeçalho ocupa apenas o espaço necessário */
     font-family: "Poetsen One", sans-serif;
     font-weight: 400;
     font-style: normal;
     color: #000000A6;
 }
+
+/* Estilo para a mensagem */
+.loginSuccess {
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    border-radius: 5px;
+    display: none;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 
 /* Body CSS */
 
@@ -63,22 +93,23 @@ body {
 
 #register-form,
 #login-form {
-    color:#333333;
+    color: #333333;
 }
 
 .input-with-icon {
     position: relative;
-        & input {
-            padding-right: 2.5rem;
-        }
 
-        & .icon {
-            position: absolute;
-            right: 10px;
-            top: 75%;
-            transform: translateY(-50%);
-            color: #aaa;
-        }
+    & input {
+        padding-right: 2.5rem;
+    }
+
+    & .icon {
+        position: absolute;
+        right: 10px;
+        top: 75%;
+        transform: translateY(-50%);
+        color: #aaa;
+    }
 }
 
 footer {
@@ -96,5 +127,4 @@ footer {
         padding-top: 50px;
         padding-bottom: 100px;
     }
-  }
-  
+}
