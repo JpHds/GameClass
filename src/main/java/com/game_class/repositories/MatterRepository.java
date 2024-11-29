@@ -18,7 +18,7 @@ public interface MatterRepository extends JpaRepository<Matter, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO matter (matter_name) VALUES " +
+    @Query(value = "INSERT INTO matters (matter_name) VALUES " +
             "('Artes'), ('Biologia'), ('Ciências'), ('Educação Física'), ('Espanhol'), " +
             "('Filosofia'), ('Física'), ('Geografia'), ('História'), ('Língua Portuguesa'), " +
             "('Matemática'), ('Química'), ('Sociologia')", nativeQuery = true)
